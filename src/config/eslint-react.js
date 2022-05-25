@@ -89,12 +89,13 @@ config.rules['react/jsx-curly-brace-presence'] = ['error', 'never'];
 // Enforce consistent line breaks in curly braces in JSX attributes and
 // expressions.
 //
-// TEMPORARILY DISABLED: See jsx-indent below.
+// DISABLED: This rule does not have a configuration option that allows for the
+// following:
 //
-// config.rules['react/jsx-curly-newline'] = ['error', {
-//   singleline: 'consistent',
-//   multiline: 'consistent'
-// }];
+// {someValue ?
+//   <div>Value is true!</div> :
+//   <div>Value is false.</div>
+// }
 config.rules['react/jsx-newline'] = 'off';
 
 // Disallow spaces inside of curly braces in JSX attributes and expressions.
@@ -120,26 +121,10 @@ config.rules['react/jsx-fragments'] = ['error', 'syntax'];
 
 // Require indentation of 2 spaces in JSX, including attributes and logical
 // expressions.
-//
-// TEMPORARILY DISABLED: This rule is currently not configurable enough to
-// support indentation in ternary operators in JSX, such as:
-//
-// {somePredicate
-//   ? <div>
-//       true
-//     </div>
-//   : <div>
-//       false
-//     </div>
-// }
-//
-// Consider re-enabling if the rule becomes more flexible in a future version.
-//
-// config.rules['react/jsx-indent'] = ['error', 2, {
-//   checkAttributes: true,
-//   indentLogicalExpressions: true
-// }];
-config.rules['react/jsx-indent'] = 'off';
+config.rules['react/jsx-indent'] = ['error', 2, {
+  checkAttributes: true,
+  indentLogicalExpressions: true
+}];
 
 // Enforce an indentation level of 2 spaces for multi-line JSX props relative to
 // their tags.
@@ -269,7 +254,10 @@ config.rules['jsx-a11y/label-has-for'] = 'off';
 // Configure the indent rule to ignore JSX nodes. The react/jsx-indent rule
 // will enforce indentation for JSX.
 config.rules['@typescript-eslint/indent'] = ['error', 2, {
-  ignoredNodes: ['JSXElement']
+  ignoredNodes: ['JSXElement'],
+  // Require an extra 2 spaces of indentation between switch statements and case
+  // statements.
+  SwitchCase: 1
 }];
 
 

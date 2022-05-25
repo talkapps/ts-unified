@@ -386,44 +386,34 @@ config.rules['@typescript-eslint/method-signature-style'] = 'off';
 
 // Enforce naming conventions for various kinds of symbols.
 config.rules['@typescript-eslint/naming-convention'] = ['warn', {
-  // By default, require a value be named using camel case.
+  // By default, require a value be named using camelCase.
   selector: 'default',
   format: ['camelCase']
 }, {
-  // Allow variables to be named in camelCase, UPPER_CASE, or PascalCase.
+  // Require variables to be named using camelCase, UPPER_CASE, or PascalCase.
   selector: 'variable',
   format: ['camelCase', 'UPPER_CASE', 'PascalCase']
 }, {
-  // Allow variables of type function to be named in camelCase or PascalCase.
+  // Require function expressions to be named using camelCase or PascalCase.
   selector: 'variable',
   types: ['function'],
   format: ['camelCase', 'PascalCase']
 }, {
-  // Allow functions to be named in camelCase or PascalCase.
+  // Require function declarations to be named using camelCase or PascalCase.
   selector: 'function',
   format: ['camelCase', 'PascalCase']
 }, {
-  // Require classes to be named in PascalCase.
-  selector: 'class',
-  format: ['PascalCase']
-}, {
-  // Require interfaces to be named in PascalCase.
-  selector: 'interface',
-  format: ['PascalCase']
-}, {
-  // Require type aliases to be named in PascalCase.
-  selector: 'typeAlias',
-  format: ['PascalCase']
-}, {
-  // Require type parameters to be named in PascalCase.
-  selector: 'typeParameter',
+  // Require classes, interfaces, type aliases, and type parameters to be named
+  // using PascalCase.
+  selector: ['class', 'interface', 'typeAlias', 'typeParameter'],
   format: ['PascalCase']
 }, {
   // Do not enforce any naming conventions for object properties because we
   // often need to use objects whose shape is defined by a third-party API or
   // schema that we have no control over.
   selector: 'property',
-  format: null // eslint-disable-line unicorn/no-null
+  // eslint-disable-next-line unicorn/no-null
+  format: null
 }];
 
 // Disallow the use of `new Array()`.
@@ -521,14 +511,8 @@ config.rules['@typescript-eslint/no-this-alias'] = ['error'];
 // Disallow throwing literals as exceptions.
 config.rules['@typescript-eslint/no-throw-literal'] = ['error'];
 
-// Limit the use of type aliases to intersections, unions, mapped types, and
-// tuples.
-config.rules['@typescript-eslint/no-type-alias'] = ['error', {
-  allowAliases: 'in-unions-and-intersections',
-  allowCallbacks: 'always',
-  allowMappedTypes: 'always',
-  allowTupleTypes: 'always'
-}];
+// Allow the use of type aliases.
+config.rules['@typescript-eslint/no-type-alias'] = 'off';
 
 // Disallow unnecessary equality comparisons against boolean literals.
 config.rules['@typescript-eslint/no-unnecessary-boolean-literal-compare'] = ['error'];
@@ -660,18 +644,12 @@ config.rules['@typescript-eslint/require-await'] = ['warn'];
 config.rules['@typescript-eslint/restrict-plus-operands'] = ['error'];
 
 // Enforce the types allowed in template literal expressions.
-//
-// TEMPORARILY DISABLED: As of June 2020, this rule currently mis-interprets
-// values typed as ('myStringA' | 'myStringB') as type `never` when the value is
-// clearly restricted to the type `string`.
-//
-// config.rules['@typescript-eslint/restrict-template-expressions'] = ['error', {
-//   allowNumber: true,
-//   allowBoolean: true,
-//   allowAny: true,
-//   allowNullable: true
-// }];
-config.rules['@typescript-eslint/restrict-template-expressions'] = 'off';
+config.rules['@typescript-eslint/restrict-template-expressions'] = ['error', {
+  allowNumber: true,
+  allowBoolean: true,
+  allowAny: true,
+  allowNullable: true
+}];
 
 // Enforces await-ing of Promise-like values before returning them. This allows
 // for better stack traces if the promise rejects.
@@ -771,18 +749,23 @@ config.rules['prefer-arrow/prefer-arrow-functions'] = ['error', {
 
 // ----- Overrides -------------------------------------------------------------
 
+/**
+ * Test files.
+ */
 config.overrides.push({
   files: [
     '*.test.*',
     '*.spec.*'
   ],
   rules: {
-    // In test files, do not require that async functions utilize the await
-    // keyword. This allows us to easily mock async functions with a mock
-    // implementation that may be synchronous.
+    // Do not require that async functions utilize the await keyword. This
+    // allows us to easily mock async functions with a mock implementation that
+    // may be synchronous.
     '@typescript-eslint/require-await': 'off',
-    // In test files, do not enforce naming convention rules for values.
-    '@typescript-eslint/naming-convention': 'off'
+    // Do not enforce naming convention rules for values.
+    '@typescript-eslint/naming-convention': 'off',
+    // Allow require() statements.
+    '@typescript-eslint/no-var-requires': 'off'
   }
 });
 

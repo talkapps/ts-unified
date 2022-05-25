@@ -116,14 +116,16 @@ Using base configuration:
 ```jsonc
 {
   "extends": "./node_modules/@talkapps/ts-unified/dist/config/tsconfig.json",
+  // You should specify at least the following configuration options, as
+  // TypeScript resolves these directories relative to the tsconfig.json file
+  // where they were defined.
   "compilerOptions": {
     "baseUrl": ".",
     "outDir": "dist",
     "paths": {
       "*": ["*", "src/*"]
     }
-  },
-  // Additional configuration here.
+  }
 }
 ```
 
@@ -253,7 +255,7 @@ npm run build:watch
 To run unit tests and generate a coverage report:
 
 ```
-$(npm bin)/nps test.coverage
+npx nps test.coverage
 ```
 
 or:

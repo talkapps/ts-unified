@@ -2,19 +2,23 @@
 // which lets us use `export default` in all other files.
 module.exports = {
   presets: [
-    [require.resolve('@babel/preset-env'), {
-      targets: {node: '12'}
+    ['@babel/preset-env', {
+      targets: [
+        'node 12'
+      ]
     }],
-    require.resolve('@babel/preset-typescript'),
-    require.resolve('@babel/preset-react')
+    '@babel/preset-typescript',
+    '@babel/preset-react'
   ],
   plugins: [
-    [require.resolve('@babel/plugin-proposal-decorators'), {legacy: true}],
-    require.resolve('@babel/plugin-proposal-nullish-coalescing-operator'),
-    require.resolve('@babel/plugin-proposal-optional-chaining'),
-    require.resolve('@babel/plugin-proposal-class-properties'),
-    require.resolve('babel-plugin-add-module-exports'),
-    [require.resolve('babel-plugin-module-resolver'), {
+    // This plugin must come before @babel/plugin-proposal-class-properties.
+    ['@babel/plugin-proposal-decorators', {legacy: true, loose: true}],
+    '@babel/plugin-transform-runtime',
+    '@babel/plugin-proposal-nullish-coalescing-operator',
+    '@babel/plugin-proposal-optional-chaining',
+    '@babel/plugin-proposal-class-properties',
+    'babel-plugin-add-module-exports',
+    ['babel-plugin-module-resolver', {
       cwd: 'packagejson',
       root: ['./src'],
       extensions: [
